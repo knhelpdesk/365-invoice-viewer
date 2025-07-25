@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -41,6 +42,9 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use(express.json());
+
+// Serve static files from the React app build
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Microsoft Graph API configuration
 const msalConfig = {
@@ -246,7 +250,13 @@ app.use((err, req, res, next) => {
 
 // 404 handler
 app.use('*', (req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+  // For API routes, return JSON error
+  if (req.originalUrl.startsWith('/api/')) {
+    res.status(404).json({ error: 'API route not found' });
+  } else {
+    // For all other routes, serve the React app
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  }
 });
 
 app.listen(PORT, () => {

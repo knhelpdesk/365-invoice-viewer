@@ -96,13 +96,12 @@ docker-compose up -d
 
 ### Setup
 ```bash
-# Install frontend dependencies
-npm install
+# Install all dependencies
+npm run install:all
 
-# Install backend dependencies
-cd server
-npm install
-cd ..
+# Or install individually
+cd client && npm install && cd ..
+cd server && npm install && cd ..
 
 # Start PostgreSQL with Docker (optional)
 docker-compose up -d db
@@ -114,8 +113,8 @@ DATABASE_URL=postgresql://postgres:password@localhost:5432/invoice_viewer
 
 ### Run Development Servers
 ```bash
-# Terminal 1: Frontend (Vite dev server)
-npm run dev
+# Terminal 1: Frontend (Vite dev server) 
+cd client && npm run dev
 
 # Terminal 2: Backend (Express server)
 cd server
@@ -130,17 +129,21 @@ Access the application:
 
 ```
 office365-invoice-viewer/
-├── src/                          # React frontend source code
-│   ├── components/               # React components
-│   │   ├── LoginForm.tsx        # OAuth2 login component
-│   │   ├── Header.tsx           # Application header
-│   │   ├── InvoiceViewer.tsx    # Main invoice viewer
-│   │   ├── InvoiceList.tsx      # Invoice list display
-│   │   ├── InvoiceSearch.tsx    # Search and filters
-│   │   └── TenantSelector.tsx   # Tenant selection
-│   ├── types/                   # TypeScript definitions
-│   ├── App.tsx                  # Main application component
-│   └── main.tsx                 # Application entry point
+├── client/                      # React frontend application
+│   ├── src/                     # React source code
+│   │   ├── components/          # React components
+│   │   │   ├── LoginForm.tsx    # OAuth2 login component
+│   │   │   ├── Header.tsx       # Application header
+│   │   │   ├── InvoiceViewer.tsx # Main invoice viewer
+│   │   │   ├── InvoiceList.tsx  # Invoice list display
+│   │   │   ├── InvoiceSearch.tsx # Search and filters
+│   │   │   └── TenantSelector.tsx # Tenant selection
+│   │   ├── types/               # TypeScript definitions
+│   │   ├── App.tsx              # Main application component
+│   │   └── main.tsx             # Application entry point
+│   ├── index.html               # HTML template
+│   ├── package.json             # Frontend dependencies
+│   └── vite.config.ts           # Vite configuration
 ├── server/                      # Node.js backend
 │   ├── index.js                 # Express server
 │   └── package.json             # Backend dependencies

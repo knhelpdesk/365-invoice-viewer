@@ -1,31 +1,33 @@
+# Multi-stage build for frontend and backend
+
 # Frontend build stage
 FROM node:18-alpine AS frontend-build
-WORKDIR /app/frontend
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
+WORKDIR /app/client
+COPY client/package*.json ./
+RUN npm install
+COPY client/ ./
 RUN npm run build
 
 # Backend build stage
 FROM node:18-alpine AS backend-build
-WORKDIR /app/backend
+WORKDIR /app/server
 COPY server/package*.json ./
-RUN npm ci --only=production
+RUN npm install --only=production
 
 # Production stage
 FROM node:18-alpine AS production
 WORKDIR /app
 
-# Install backend dependencies
-COPY --from=backend-build /app/backend/node_modules ./node_modules
+# Install backend dependencies and copy backend code
+COPY --from=backend-build /app/server/node_modules ./node_modules
 COPY server/ ./
 
-# Copy frontend build
-COPY --from=frontend-build /app/frontend/dist ./public
+# Copy frontend build to serve static files
+COPY --from=frontend-build /app/client/dist ./public
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nodejs -u 1001
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
 
 # Set ownership
 RUN chown -R nodejs:nodejs /app
