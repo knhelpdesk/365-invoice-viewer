@@ -55,7 +55,7 @@ const msalConfig = {
   }
 };
 
-const cca = new Client(msalConfig);
+const cca = new ConfidentialClientApplication(msalConfig);
 
 // Middleware to verify access token
 const verifyToken = async (req, res, next) => {
