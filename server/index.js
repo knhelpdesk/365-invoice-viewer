@@ -3,7 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const { Client } = require('@azure/msal-node');
+const { ConfidentialClientApplication } = require('@azure/msal-node');
 const axios = require('axios');
 const { Pool } = require('pg');
 require('dotenv').config();
