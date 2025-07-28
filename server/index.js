@@ -266,6 +266,8 @@ app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`📁 Serving static files from: ${path.join(__dirname, 'public')}`);
+  console.log(`🌐 Server listening on 0.0.0.0:${PORT}`);
+  console.log(`🔗 Health check available at: http://localhost:${PORT}/health`);
 });
 
 module.exports = app;
