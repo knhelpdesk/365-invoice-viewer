@@ -50,6 +50,7 @@ services:
     networks:
       - invoice-network
     restart: unless-stopped
+    command: ["nginx", "-g", "daemon off;"]
 
 volumes:
   postgres-data:

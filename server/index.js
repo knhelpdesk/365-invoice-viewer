@@ -249,12 +249,15 @@ app.use((err, req, res, next) => {
 });
 
 // 404 handler
-app.use('*', (req, res) => {
+app.use('*', (req, res, next) => {
+  console.log(`Handling request: ${req.method} ${req.originalUrl}`);
   // For API routes, return JSON error
   if (req.originalUrl.startsWith('/api/')) {
+    console.log('API route not found:', req.originalUrl);
     res.status(404).json({ error: 'API route not found' });
   } else {
     // For all other routes, serve the React app
+    console.log('Serving React app for:', req.originalUrl);
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
   }
 });
@@ -262,6 +265,7 @@ app.use('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`📁 Serving static files from: ${path.join(__dirname, 'public')}`);
 });
 
 module.exports = app;
